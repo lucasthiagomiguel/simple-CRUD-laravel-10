@@ -1,0 +1,60 @@
+version: "3.7"
+
+services:
+  # image project
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - redis
+    networks:
+      - laravel
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=laravel
+      - DB_USERNAME=laraveluser
+      - DB_PASSWORD=secret
+
+  # nginx
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "8989:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/:/etc/nginx/conf.d/
+    networks:
+      - laravel
+
+  # db postgres
+  postgres:
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: laravel
+      POSTGRES_USER: laraveluser
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - ./.docker/postgres/data:/var/lib/postgresql/data  # Persistir dados do PostgreSQL
+    ports:
+      - "5432:5432"
+    networks:
+      - laravel
+
+  # redis
+  redis:
+    image: redis:latest
+    networks:
+      - laravel
+
+networks:
+  laravel:
+    driver: bridge
