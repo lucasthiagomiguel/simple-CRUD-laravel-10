@@ -9,5 +9,5 @@ class Place extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'city', 'state'];
+    protected $fillable = ['name', 'slug', 'city', 'state','status'];
 }
