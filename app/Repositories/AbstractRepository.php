@@ -31,7 +31,7 @@ abstract class AbstractRepository {
     }
 
     public function getResult() {
-        return $this->model->All();
+        return $this->model->get();
     }
 }
 

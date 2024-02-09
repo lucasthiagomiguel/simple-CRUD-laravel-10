@@ -27,11 +27,9 @@ class PlaceController extends Controller
 
         if($request->has('filter')) {
             $placeRepository->filter($request->filter);
+        }else{
+            
         }
-
-        if($request->has('attributes')) {
-            $placeRepository->selectAttributes($request->attributes);
-        } 
 
         return  response()->json($placeRepository->getResult(),200); 
     }
