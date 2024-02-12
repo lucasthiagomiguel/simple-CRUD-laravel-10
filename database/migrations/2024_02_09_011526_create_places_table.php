@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->string('city');
-            $table->string('state')->unique();
+            $table->string('state');
             $table->boolean('status');
             $table->timestamps();
         });
